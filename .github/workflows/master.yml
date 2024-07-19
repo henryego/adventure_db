@@ -11,15 +11,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1'  # Adjust this as necessary
-
     - name: Build DACPAC from SQL project
-      run: dotnet build **/*.sqlproj /p:OutputPath=./output
+      run: |
+         msbuild.exe AdventureWorks2012.sln /p:Configuration=Release
+      # dotnet build **/*.sqlproj /p:OutputPath=./output
       # This step assumes you're building a DACPAC from a SQL project.
       # If you already have a DACPAC, you can skip this step.
+      
+    - uses: actions/upload-artifact@v3.0.0
+      with:
+        name: SQLDB
+        path: $ {{ github.workspace }}/bin/Release
 
     - name: Deploy DACPAC to Azure SQL Database
       uses: azure/sql-action@v1
