@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - master  # Adjust this as necessary
-
 jobs:
-  build_and_deploy:
+
+  build:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -14,46 +14,86 @@ jobs:
     - name: Setup msbuild PATH
       uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Build solution AdventureWorks2012/AdventureWorks2012.sqlproj
-      run: msbuild AdventureWorks2012/AdventureWorks2012.sqlproj /p:OutDir=${{ github.workspace }}\BuildOutput
-      shell: pwsh
-      
-    - name: Copy Files to Artifact Staging Directory
+    - name: Build Database project
       run: |
-        $sourceFolder = "${{ github.workspace }}\BuildOutput"
-        $targetFolder = "${{ github.workspace }}\artifactStagingDirectory"
-        $buildConfiguration = "Release" # Change this to your build configuration if needed
-        New-Item -ItemType Directory -Force -Path $targetFolder
-        Copy-Item -Path "$sourceFolder\**\bin\$buildConfiguration\**" -Destination $targetFolder -Recurse -Force
-      shell: pwsh
-      if: always()
-      
-    # - name: Build DACPAC from SQL project
-    #   run: |
-    #     msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sqlproj' /p:OutputPath=./output
-    #     #msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutDir=${{ github.workspace }}
-    #   #dotnet build 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutputPath=./output
-    # # dotnet build **/*.sqlproj /p:OutputPath=./output
-    # #   # This step assumes you're building a DACPAC from a SQL project.
-    # #   # If you already have a DACPAC, you can skip this step.
-      
-    # - name: Publish
-    #   run: dotnet publish --output ${{ github.workspace }}\artifactStagingDirectory
-    # - uses: actions/upload-artifact@v2
-    #   with:
-    #     path: ${{ github.workspace }}
-    
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
+        msbuild.exe AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
+
+    - uses: actions/upload-artifact@v3.0.0
       with:
-        name: my-artifact  # Name of the artifact. Change this to something meaningful related to your project.
-        path: ${{ github.workspace }}\artifactStagingDirectory  # Path to the directory containing the artifacts to upload.
-      if: always()  # Ensures this step runs regardless of the success or failure of previous steps.
+         name: SQLDB
+         path: ${{ github.workspace }}/bin/release  
+
+  DeploySQLDB:
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+       - name: download artifact contaning dacpac
+         uses: actions/download-artifact@v3.0.0
+         with:
+            name: SQLDB
+
+       - uses: azure/login@v1
+         with: 
+           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+       - name: Azure SQl deploy 
+         uses: Azure/sql-action@v1.3
+         with:
+           server-name: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
+           connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
+           dacpac-package: 'SQLDB.dacpac'
         
-    - name: Deploy DACPAC to Azure SQL Database
-      uses: azure/sql-action@v1
-      with:
-        server-name: advtestsqldb001.database.windows.net  # Update this
-        connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-        dacpac-package: './output/AdventureWorks2012.dacpac'
-        # Update the path to your DACPAC
+  
+    
+     
+       
+
+
+
+
+         
+    
+    # - name: Build solution AdventureWorks2012/AdventureWorks2012.sqlproj
+    #   run: msbuild AdventureWorks2012/AdventureWorks2012.sqlproj /p:OutDir=${{ github.workspace }}\BuildOutput
+    #   shell: pwsh
+      
+    # - name: Copy Files to Artifact Staging Directory
+    #   run: |
+    #     $sourceFolder = "${{ github.workspace }}\BuildOutput"
+    #     $targetFolder = "${{ github.workspace }}\artifactStagingDirectory"
+    #     $buildConfiguration = "Release" # Change this to your build configuration if needed
+    #     New-Item -ItemType Directory -Force -Path $targetFolder
+    #     Copy-Item -Path "$sourceFolder\**\bin\$buildConfiguration\**" -Destination $targetFolder -Recurse -Force
+    #   shell: pwsh
+    #   if: always()
+      
+    # # - name: Build DACPAC from SQL project
+    # #   run: |
+    # #     msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sqlproj' /p:OutputPath=./output
+    # #     #msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutDir=${{ github.workspace }}
+    # #   #dotnet build 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutputPath=./output
+    # # # dotnet build **/*.sqlproj /p:OutputPath=./output
+    # # #   # This step assumes you're building a DACPAC from a SQL project.
+    # # #   # If you already have a DACPAC, you can skip this step.
+      
+    # # - name: Publish
+    # #   run: dotnet publish --output ${{ github.workspace }}\artifactStagingDirectory
+    # # - uses: actions/upload-artifact@v2
+    # #   with:
+    # #     path: ${{ github.workspace }}
+    
+    # - name: Upload Artifacts
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: my-artifact  # Name of the artifact. Change this to something meaningful related to your project.
+    #     path: ${{ github.workspace }}\artifactStagingDirectory  # Path to the directory containing the artifacts to upload.
+    #   if: always()  # Ensures this step runs regardless of the success or failure of previous steps.
+        
+    # - name: Deploy DACPAC to Azure SQL Database
+    #   uses: azure/sql-action@v1
+    #   with:
+    #     server-name: advtestsqldb001.database.windows.net  # Update this
+    #     connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+    #     dacpac-package: './output/AdventureWorks2012.dacpac'
+    #     # Update the path to your DACPAC
