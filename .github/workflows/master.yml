@@ -16,7 +16,7 @@ jobs:
 
     - name: Build DACPAC from SQL project
       run: |
-        msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutputPath=./output
+        msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sqlproj' /p:OutputPath=./output
         #msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutDir=${{ github.workspace }}
       #dotnet build 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutputPath=./output
     # dotnet build **/*.sqlproj /p:OutputPath=./output
