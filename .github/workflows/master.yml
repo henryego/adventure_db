@@ -17,7 +17,7 @@ jobs:
         dotnet-version: '3.1'  # Adjust this as necessary
 
     - name: Build DACPAC from SQL project
-      run: dotnet build **/*.sln /p:OutputPath=./output
+      run: dotnet build **/*.sqlproj /p:OutputPath=./output
       # This step assumes you're building a DACPAC from a SQL project.
       # If you already have a DACPAC, you can skip this step.
 
