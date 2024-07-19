@@ -7,13 +7,27 @@ on:
 
 jobs:
   build_and_deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+    - name: Setup msbuild PATH
+      uses: microsoft/setup-msbuild@v1.0.2
 
+    - name: Build solution AdventureWorks2012/AdventureWorks2012.sqlproj
+      run: msbuild AdventureWorks2012/AdventureWorks2012.sqlproj /p:OutDir=${{ github.workspace }}\BuildOutput
+      shell: pwsh
+      
+    - name: Copy Files to Artifact Staging Directory
+      run: |
+        $sourceFolder = "${{ github.workspace }}\BuildOutput"
+        $targetFolder = "${{ github.workspace }}\artifactStagingDirectory"
+        $buildConfiguration = "Release" # Change this to your build configuration if needed
+        New-Item -ItemType Directory -Force -Path $targetFolder
+        Copy-Item -Path "$sourceFolder\**\bin\$buildConfiguration\**" -Destination $targetFolder -Recurse -Force
+      shell: pwsh
+      if: always()
+      
     - name: Build DACPAC from SQL project
       run: |
         msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sqlproj' /p:OutputPath=./output
@@ -23,8 +37,8 @@ jobs:
     #   # This step assumes you're building a DACPAC from a SQL project.
     #   # If you already have a DACPAC, you can skip this step.
       
-    # - name: Publish
-    #   run: dotnet publish --output ${{ github.workspace }}
+    - name: Publish
+      run: dotnet publish --output ${{ github.workspace }}\artifactStagingDirectory
     # - uses: actions/upload-artifact@v2
     #   with:
     #     path: ${{ github.workspace }}
