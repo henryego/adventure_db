@@ -13,7 +13,7 @@ jobs:
 
     - name: Build DACPAC from SQL project
       run: |
-         msbuild.exe AdventureWorks2012.sln /p:Configuration=Release
+         msbuild.exe AdventureWorks2012.sqlproj /p:Configuration=Release
       # dotnet build **/*.sqlproj /p:OutputPath=./output
       # This step assumes you're building a DACPAC from a SQL project.
       # If you already have a DACPAC, you can skip this step.
