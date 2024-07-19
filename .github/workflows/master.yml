@@ -11,8 +11,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+    # - name: Add msbuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.1
 
     - name: Build DACPAC from SQL project
       run: dotnet build 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutputPath=./output
