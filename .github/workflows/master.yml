@@ -3,7 +3,7 @@ name: Deploy to Azure SQL Database
 on:
   push:
     branches:
-      - main  # Adjust this as necessary
+      - master  # Adjust this as necessary
 
 jobs:
   build_and_deploy:
