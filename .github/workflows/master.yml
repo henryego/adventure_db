@@ -21,7 +21,7 @@ jobs:
     - uses: actions/upload-artifact@v3.0.0
       with:
          name: SQLDB
-         path: ${{ github.workspace }}/bin/release  
+         path: ${{ github.workspace }}\bin\release  
 
   DeploySQLDB:
     needs: build
