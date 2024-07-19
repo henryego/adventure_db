@@ -34,4 +34,5 @@ jobs:
       with:
         server-name: advtestsqldb001.database.windows.net  # Update this
         connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-        dacpac-package: ./output/AdventureWorks2012/AdventureWorks2012.dacpac  # Update the path to your DACPAC
+        dacpac-package: './output/AdventureWorks2012.dacpac'
+        # Update the path to your DACPAC
