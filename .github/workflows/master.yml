@@ -37,12 +37,19 @@ jobs:
     # #   # This step assumes you're building a DACPAC from a SQL project.
     # #   # If you already have a DACPAC, you can skip this step.
       
-    - name: Publish
-      run: dotnet publish --output ${{ github.workspace }}\artifactStagingDirectory
+    # - name: Publish
+    #   run: dotnet publish --output ${{ github.workspace }}\artifactStagingDirectory
     # - uses: actions/upload-artifact@v2
     #   with:
     #     path: ${{ github.workspace }}
-
+    
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact  # Name of the artifact. Change this to something meaningful related to your project.
+        path: ${{ github.workspace }}\artifactStagingDirectory  # Path to the directory containing the artifacts to upload.
+      if: always()  # Ensures this step runs regardless of the success or failure of previous steps.
+        
     - name: Deploy DACPAC to Azure SQL Database
       uses: azure/sql-action@v1
       with:
