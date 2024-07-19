@@ -46,7 +46,7 @@ jobs:
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
          with:
-           server-name: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
+           server-name: advtestsqldb001.database.windows.net
            connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
            dacpac-package: 'SQLDB.dacpac'
           
