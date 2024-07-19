@@ -16,12 +16,12 @@ jobs:
 
     - name: Build Database project
       run: |
-        msbuild.exe AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
+        msbuild.exe AdventureWorks2012/AdventureWorks2012.sqlproj /p:OutDir=${{ github.workspace }}
 
     - uses: actions/upload-artifact@v3.0.0
       with:
          name: SQLDB
-         path: ${{ github.workspace }}\bin\release  
+         path: ${{ github.workspace }}
 
   DeploySQLDB:
     needs: build
@@ -33,9 +33,15 @@ jobs:
          with:
             name: SQLDB
 
+       # - uses: azure/login@v1
+       #   with: 
+       #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+           
        - uses: azure/login@v1
-         with: 
-           creds: ${{ secrets.AZURE_CREDENTIALS }}
+         with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
        - name: Azure SQl deploy 
          uses: Azure/sql-action@v1.3
@@ -43,6 +49,7 @@ jobs:
            server-name: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
            connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
            dacpac-package: 'SQLDB.dacpac'
+          
         
   
     
