@@ -16,12 +16,12 @@ jobs:
 
     - name: Build Database project
       run: |
-        msbuild.exe AdventureWorks2012/AdventureWorks2012.sqlproj /p:OutDir=${{ github.workspace }}
+        msbuild.exe AdventureWorks2012/AdventureWorks2012.sqlproj /p:OutDir=${{ github.workspace }}/Output
 
     - uses: actions/upload-artifact@v3.0.0
       with:
          name: SQLDB
-         path: ${{ github.workspace }}
+         path: AdventureWorks2012/AdventureWorks2012.dacpac
 
   DeploySQLDB:
     needs: build
