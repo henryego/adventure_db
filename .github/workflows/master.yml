@@ -11,12 +11,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    # - name: Add msbuild to PATH
-    #   uses: microsoft/setup-msbuild@v1.1
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
 
     - name: Build DACPAC from SQL project
-      run: dotnet build 'AdventureWorks2012\AdventureWorks2012.sln' /p:OutputPath=./output
-    #      msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutDir=${{ github.workspace }}
+      run: |
+        msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutputPath=./output
+        #msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutDir=${{ github.workspace }}
+      #dotnet build 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutputPath=./output
     # dotnet build **/*.sqlproj /p:OutputPath=./output
     #   # This step assumes you're building a DACPAC from a SQL project.
     #   # If you already have a DACPAC, you can skip this step.
@@ -30,6 +32,6 @@ jobs:
     - name: Deploy DACPAC to Azure SQL Database
       uses: azure/sql-action@v1
       with:
-        server-name: your_server_name.database.windows.net  # Update this
+        server-name: advtestsqldb001.database.windows.net  # Update this
         connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
         dacpac-package: ./output/AdventureWorks2012.sqlproj.dacpac  # Update the path to your DACPAC
