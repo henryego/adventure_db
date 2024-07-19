@@ -1,4 +1,4 @@
-AdventureWorks2012name: Deploy to Azure SQL Database
+name: Deploy to Azure SQL Database
 
 on:
   push:
