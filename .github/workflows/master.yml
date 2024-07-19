@@ -3,11 +3,11 @@ name: Deploy to Azure SQL Database
 on:
   push:
     branches:
-      - master  # Adjust this as necessary
+      - main  # Adjust this as necessary
 
 jobs:
   build_and_deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
@@ -15,16 +15,17 @@ jobs:
       uses: microsoft/setup-msbuild@v1.1
 
     - name: Build DACPAC from SQL project
-      run: |
-         msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sqlproj' /p:OutDir=${{ github.workspace }}
-      # dotnet build **/*.sqlproj /p:OutputPath=./output
-      # This step assumes you're building a DACPAC from a SQL project.
-      # If you already have a DACPAC, you can skip this step.
+      run: dotnet build 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutputPath=./output
+    #      msbuild.exe 'AdventureWorks2012/AdventureWorks2012.sln' /p:OutDir=${{ github.workspace }}
+    # dotnet build **/*.sqlproj /p:OutputPath=./output
+    #   # This step assumes you're building a DACPAC from a SQL project.
+    #   # If you already have a DACPAC, you can skip this step.
       
-    - uses: actions/upload-artifact@v3.0.0
-      with:
-        name: SQLDB
-        path: $ {{ github.workspace }}/bin/Release
+    # - name: Publish
+    #   run: dotnet publish --output ${{ github.workspace }}
+    # - uses: actions/upload-artifact@v2
+    #   with:
+    #     path: ${{ github.workspace }}
 
     - name: Deploy DACPAC to Azure SQL Database
       uses: azure/sql-action@v1
