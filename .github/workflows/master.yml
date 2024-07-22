@@ -6,27 +6,16 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0'  # Specify the .NET Core version you need
+    - name: Setup msbuild PATH
+      uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Build Database project
       run: |
-        dotnet build AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
-
-
-
-    # - name: Setup msbuild PATH
-    #   uses: microsoft/setup-msbuild@v1.0.2
-
-    # - name: Build Database project
-    #   run: |
-    #     msbuild.exe AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
+        msbuild.exe AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
 
     - uses: actions/upload-artifact@v3.0.0
       with:
@@ -35,7 +24,7 @@ jobs:
 
   DeploySQLDB:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
        - name: download artifact contaning dacpac
@@ -59,6 +48,15 @@ jobs:
            server-name: advtestsqldb001.database.windows.net
            connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
            dacpac-package: 'AdventureWorks2012.dacpac'
+
+    # - name: Setup .NET Core
+    #   uses: actions/setup-dotnet@v1
+    #   with:
+    #     dotnet-version: '6.0'  # Specify the .NET Core version you need
+
+    # - name: Build Database project
+    #   run: |
+    #     dotnet build AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
           
         
   
