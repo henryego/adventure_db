@@ -30,8 +30,11 @@ jobs:
          path: ${{ github.workspace }}/AdventureWorks2012/bin/Release/
 
   DeploySQLDBToDev:
-    needs: build
     runs-on: windows-latest
+    needs: build
+    if: github.ref == 'refs/heads/master' && success()
+    # environment: ${{ github.ref == 'refs/heads/master' ? 'production' : 'staging' }}
+    environment: DeploySQLDB
 
     steps:
        - name: download artifact contaning dacpac
