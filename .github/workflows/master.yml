@@ -13,7 +13,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1'  # Specify the .NET Core version you need
+        dotnet-version: '6.0'  # Specify the .NET Core version you need
 
     - name: Build Database project
       run: |
@@ -35,7 +35,7 @@ jobs:
 
   DeploySQLDB:
     needs: build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
        - name: download artifact contaning dacpac
