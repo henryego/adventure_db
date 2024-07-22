@@ -29,7 +29,7 @@ jobs:
          name: SQLDB
          path: ${{ github.workspace }}/AdventureWorks2012/bin/Release/
 
-  DeploySQLDB:
+  DeploySQLDBToDev:
     needs: build
     runs-on: windows-latest
 
@@ -56,6 +56,36 @@ jobs:
            connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
            dacpac-package: 'AdventureWorks2012.dacpac'
 
+  DeploySQLDBToPrd:
+    needs: DeploySQLDBToDev
+    runs-on: windows-latest
+
+    steps:
+       - name: download artifact contaning dacpac
+         uses: actions/download-artifact@v3.0.0
+         with:
+            name: SQLDB
+
+       # - uses: azure/login@v1
+       #   with: 
+       #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+           
+       - uses: azure/login@v1
+         with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+       - name: Azure SQl deploy 
+         uses: Azure/sql-action@v1.3
+         with:
+           server-name: advtestsqldb001.database.windows.net
+           connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING_PRD }}'
+           dacpac-package: 'AdventureWorks2012.dacpac'
+
+
+==============================================================================================
+
     # - name: Setup .NET Core
     #   uses: actions/setup-dotnet@v1
     #   with:
@@ -63,18 +93,7 @@ jobs:
 
     # - name: Build Database project
     #   run: |
-    #     dotnet build AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
-          
-        
-  
-    
-     
-       
-
-
-
-
-         
+    #     dotnet build AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release        
     
     # - name: Build solution AdventureWorks2012/AdventureWorks2012.sqlproj
     #   run: msbuild AdventureWorks2012/AdventureWorks2012.sqlproj /p:OutDir=${{ github.workspace }}\BuildOutput
