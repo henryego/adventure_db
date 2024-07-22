@@ -10,12 +10,23 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup msbuild PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1'  # Specify the .NET Core version you need
 
     - name: Build Database project
       run: |
-        msbuild.exe AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
+        dotnet build AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
+
+
+
+    # - name: Setup msbuild PATH
+    #   uses: microsoft/setup-msbuild@v1.0.2
+
+    # - name: Build Database project
+    #   run: |
+    #     msbuild.exe AdventureWorks2012/AdventureWorks2012.sqlproj /p:Configuration=Release
 
     - uses: actions/upload-artifact@v3.0.0
       with:
