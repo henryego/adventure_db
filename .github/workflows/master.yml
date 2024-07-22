@@ -1,5 +1,4 @@
 name: Deploy to Azure SQL Database
-
 on:
   push:
     branches:
