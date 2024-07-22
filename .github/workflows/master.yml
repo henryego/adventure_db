@@ -32,7 +32,7 @@ jobs:
   DeploySQLDBToDev:
     runs-on: windows-latest
     needs: build
-    if: github.ref == 'refs/heads/feature/' && success()
+    if: github.ref == 'refs/heads/master' && success()
     # environment: ${{ github.ref == 'refs/heads/master' ? 'production' : 'staging' }}
     environment: DeploySQLDB
 
