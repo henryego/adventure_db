@@ -2,7 +2,6 @@
     [BusinessEntityID]  INT                 NOT NULL,
     [NationalIDNumber]  NVARCHAR (15)       NOT NULL,
     [LoginID]           NVARCHAR (256)      NOT NULL,
-    [Email]             NCHAR (1)           NOT NULL,
     [OrganizationNode]  [sys].[hierarchyid] NULL,
     [OrganizationLevel] AS                  ([OrganizationNode].[GetLevel]()),
     [JobTitle]          NVARCHAR (50)       NOT NULL,
