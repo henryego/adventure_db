@@ -1,8 +1,9 @@
 name: Deploy to Azure SQL Database
 on:
   push:
-    branches: [ master ]
-              [feature/*]
+    branches:
+       -  master
+       -  feature/*
   # pull_request:
   #   branches: [ master ]
       
