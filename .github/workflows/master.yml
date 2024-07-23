@@ -34,7 +34,8 @@ jobs:
   DeploySQLDBToDev:
     runs-on: windows-latest
     needs: build
-    if: github.event.ref == 'refs/heads/master' && success()
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master' && github.event.pull_request.merged == true
+    # if: github.event.ref == 'refs/heads/' && success()
     # environment: ${{ github.ref == 'refs/heads/master' ? 'production' : 'staging' }}
     environment: DeploySQLDB
 
