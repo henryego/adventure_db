@@ -36,7 +36,7 @@ jobs:
     needs: build
     if: github.event.ref == 'refs/heads/master' && success()
     # environment: ${{ github.ref == 'refs/heads/master' ? 'production' : 'staging' }}
-    environment: DeploySQLDB
+    # environment: DeploySQLDB
 
     steps:
        - name: download artifact contaning dacpac
