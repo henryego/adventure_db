@@ -5,7 +5,7 @@ on:
     branches:
        -  master
        -  prod
-       - preprod
+       -  preprod
   # pull_request:
   #   branches: [ master ]
       
@@ -70,11 +70,10 @@ jobs:
            dacpac-package: 'AdventureWorks2012.dacpac'
 
   DeploySQLDBToPrd:
-    needs: DeploySQLDBToDev
     runs-on: windows-latest
-    environment: DeploySQLDB
+    needs: DeploySQLDBToDev
     if: success() && github.ref == 'refs/heads/prod'
-    
+    environment: DeploySQLDBProd
     steps:
        - name: download artifact contaning dacpac
          uses: actions/download-artifact@v3.0.0
