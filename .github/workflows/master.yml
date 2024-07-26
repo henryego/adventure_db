@@ -28,7 +28,7 @@ jobs:
     - name: Set up .NET SDK
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '6.0.x' # Adjust the version as needed
+        dotnet-version: '6.0.424' # Adjust the version as needed
 
     - name: Build Database project
       run: |
