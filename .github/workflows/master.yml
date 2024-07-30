@@ -21,7 +21,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install Visual Studio Build Tools
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '5.x'  # Specify the .NET version you need
+
+    - name: Install MSBuild
       run: |
         choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --quiet --wait"
 
