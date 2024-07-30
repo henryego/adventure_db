@@ -21,8 +21,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup msbuild PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+    # - name: Setup msbuild PATH
+    #   uses: microsoft/setup-msbuild@v1.0.2
     
     # - name: Set up .NET SDK
     #   uses: actions/setup-dotnet@v2
@@ -34,10 +34,10 @@ jobs:
         cd AdventureWorks2012
         dotnet build AdventureWorks2012.sqlproj /p:Configuration=Release
         
-    # - name: Build Database project
-    #   run: |
-    #     cd AdventureWorks2012
-    #     msbuild.exe AdventureWorks2012.sqlproj /p:Configuration=Release
+    - name: Build Database project
+      run: |
+        cd AdventureWorks2012
+        msbuild.exe AdventureWorks2012.sqlproj /p:Configuration=Release
 
     - uses: actions/upload-artifact@v3.0.0
       with:
