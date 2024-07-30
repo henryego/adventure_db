@@ -29,10 +29,10 @@ jobs:
     #   with:
     #     dotnet-version: '6.0.424' # Adjust the version as needed
 
-    - name: Build Database project
-      run: |
-        cd AdventureWorks2012
-        dotnet build AdventureWorks2012.sqlproj /p:Configuration=Release
+    # - name: Build Database project
+    #   run: |
+    #     cd AdventureWorks2012
+    #     dotnet build AdventureWorks2012.sqlproj /p:Configuration=Release
         
     - name: Build Database project
       run: |
