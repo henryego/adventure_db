@@ -33,7 +33,9 @@ jobs:
     #   run: |
     #     cd AdventureWorks2012
     #     dotnet build AdventureWorks2012.sqlproj /p:Configuration=Release
-        
+    - name: Set up MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+      
     - name: Build Database project
       run: |
         cd AdventureWorks2012
