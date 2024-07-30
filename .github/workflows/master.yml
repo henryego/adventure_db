@@ -21,21 +21,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '5.x'  # Specify the .NET version you need
-
-    - name: Install MSBuild
+    - name: Install Visual Studio
       run: |
-        choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --quiet --wait"
+        # Download the Visual Studio Installer
+        Invoke-WebRequest -Uri https://aka.ms/vs/16/release/vs_installer.exe -OutFile vs_installer.exe
 
-    - name: Locate MSBuild
-      id: locate-msbuild
-      run: |
-        $vswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
-        $msbuildPath = & $vswherePath -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
-        echo "MSBUILD_PATH=$msbuildPath" >> $GITHUB_ENV
         
     # - name: Set up MSBuild
     #   uses: microsoft/setup-msbuild@v1.0.2
