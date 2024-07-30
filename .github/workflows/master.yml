@@ -21,15 +21,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Visual Studio
-      uses: actions/setup-visual-studio@v1
-      with:
-        vs-version: 16.0
+    - name: Install Visual Studio Build Tools
+      run: |
+        choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --quiet --wait"
 
     - name: Locate MSBuild
       id: locate-msbuild
       run: |
-        $vswherePath = "${{ env.ProgramFiles(x86) }}\Microsoft Visual Studio\Installer\vswhere.exe"
+        $vswherePath = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"
         $msbuildPath = & $vswherePath -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
         echo "MSBUILD_PATH=$msbuildPath" >> $GITHUB_ENV
         
