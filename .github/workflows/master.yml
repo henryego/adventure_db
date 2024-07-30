@@ -26,6 +26,13 @@ jobs:
         # Download the Visual Studio Installer
         Invoke-WebRequest -Uri https://aka.ms/vs/16/release/vs_installer.exe -OutFile vs_installer.exe
 
+        # Install Visual Studio with required components
+        .\vs_installer.exe --quiet --wait --norestart --nocache `
+          --add Microsoft.VisualStudio.Workload.ManagedDesktop `
+          --add Microsoft.VisualStudio.Workload.NetWeb `
+          --add Microsoft.VisualStudio.Workload.Universal `
+          --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
+
         
     # - name: Set up MSBuild
     #   uses: microsoft/setup-msbuild@v1.0.2
