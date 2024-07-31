@@ -16,21 +16,21 @@ permissions:
 
 jobs:
   install-visual-studio:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
       
-    # - name: Setup .NET Core
-    #   uses: actions/setup-dotnet@v1
-    #   with:
-    #     dotnet-version: '3.0'  # Specify the .NET Core version you need
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.0'  # Specify the .NET Core version you need
 
-    # - name: Build .NET Projects
-    #   run: |
-    #    cd AdventureWorks2012
-    #    dotnet build AdventureWorks2012.sqlproj /p:Configuration=Release
+    - name: Build .NET Projects
+      run: |
+       cd AdventureWorks2012
+       dotnet build AdventureWorks2012.sln /p:Configuration=Release
 
   # build:
   #   runs-on: self-hosted
