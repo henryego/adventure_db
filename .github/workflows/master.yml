@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   install-visual-studio:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
