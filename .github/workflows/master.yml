@@ -29,7 +29,6 @@ jobs:
 
     - name: Build .NET Projects
       run: |
-       cd AdventureWorks2012
        dotnet build AdventureWorks2012.sln /p:Configuration=Release
 
   # build:
