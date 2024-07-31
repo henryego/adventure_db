@@ -21,6 +21,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Setup msbuild PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+      
     - name: Install Visual Studio
       run: |
         # Download the Visual Studio Installer
