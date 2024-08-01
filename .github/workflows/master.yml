@@ -28,16 +28,13 @@ jobs:
         dotnet-version: '8.0.x' # Specify the .NET version you need
 
     - name: Install Chocolatey
-      run: |
-          Set-ExecutionPolicy Bypass -Scope Process -Force; `
-          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
-          iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+      run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
       shell: pwsh
       
-    - name: Ensure Chocolatey is in PATH
-      run: |
-          $env:Path += ";$env:ALLUSERSPROFILE\chocolatey\bin"
-      shell: pwsh 
+    # - name: Ensure Chocolatey is in PATH
+    #   run: |
+    #       $env:Path += ";$env:ALLUSERSPROFILE\chocolatey\bin"
+    #   shell: pwsh 
       
     - name: Install Visual Studio Build Tools and SSDT
       run: |
