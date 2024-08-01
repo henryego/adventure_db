@@ -22,27 +22,27 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '8.0.x' # Specify the .NET version you need
+    # - name: Setup .NET
+    #   uses: actions/setup-dotnet@v2
+    #   with:
+    #     dotnet-version: '8.0.x' # Specify the .NET version you need
 
-    - name: Install Chocolatey
-      run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-      shell: pwsh
+    # - name: Install Chocolatey
+    #   run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    #   shell: pwsh
       
-    - name: Ensure Chocolatey is in PATH
-      run: |
-          $env:Path += ";$env:ALLUSERSPROFILE\chocolatey\bin"
-      shell: pwsh 
+    # - name: Ensure Chocolatey is in PATH
+    #   run: |
+    #       $env:Path += ";$env:ALLUSERSPROFILE\chocolatey\bin"
+    #   shell: pwsh 
       
-    - name: Install Visual Studio Build Tools and SSDT
-      run: |
-         choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Component.SQL.DataTools --includeRecommended --includeOptional" -y
-      shell: pwsh
-    - name: Build SQL Project
-      run: |
-        msbuild ./AdventureWorks2012.sqlproj /p:Configuration=Release /p:DropObjectsNotInSource=true
+    # - name: Install Visual Studio Build Tools and SSDT
+    #   run: |
+    #      choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Component.SQL.DataTools --includeRecommended --includeOptional" -y
+    #   shell: pwsh
+    # - name: Build SQL Project
+    #   run: |
+    #     msbuild ./AdventureWorks2012.sqlproj /p:Configuration=Release /p:DropObjectsNotInSource=true
       
     # - name: Setup .NET Core
     #   uses: actions/setup-dotnet@v1
