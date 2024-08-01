@@ -34,6 +34,11 @@ jobs:
           iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
       shell: pwsh
       
+    - name: Ensure Chocolatey is in PATH
+      run: |
+          $env:Path += ";$env:ALLUSERSPROFILE\chocolatey\bin"
+      shell: pwsh 
+      
     - name: Install Visual Studio Build Tools and SSDT
       run: |
          choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Component.SQL.DataTools --includeRecommended --includeOptional" -y
