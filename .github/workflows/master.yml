@@ -1,5 +1,4 @@
-name: Deploy to Azure SQL Database
-on:
+name: Deploy to Azure SQL Databason:
   push:
     branches:
        -  master
@@ -64,7 +63,7 @@ jobs:
     - name: Build Database project
       run: |
         cd AdventureWorks2012
-        msbuild.exe AdventureWorks2012.sqlproj /p:Configuration=Release
+        msbuild AdventureWorks2012.sqlproj /p:Configuration=Release
 
     # - uses: actions/upload-artifact@v3.0.0
     #   with:
