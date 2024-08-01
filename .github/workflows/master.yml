@@ -32,11 +32,12 @@ jobs:
           Set-ExecutionPolicy Bypass -Scope Process -Force; `
           [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
           iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-
+      shell: pwsh
+      
     - name: Install Visual Studio Build Tools and SSDT
       run: |
-         choco.exe install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Component.SQL.DataTools --includeRecommended --includeOptional" -y
-
+         choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Component.SQL.DataTools --includeRecommended --includeOptional" -y
+      shell: pwsh
     - name: Build SQL Project
       run: |
         msbuild ./AdventureWorks2012.sqlproj /p:Configuration=Release /p:DropObjectsNotInSource=true
