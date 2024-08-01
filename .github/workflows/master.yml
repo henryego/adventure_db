@@ -16,20 +16,33 @@ permissions:
 
 jobs:
   install-visual-studio:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.0'  # Specify the .NET Core version you need
 
-    - name: Build .NET Projects
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '5.0.x' # Specify the .NET version you need
+
+    - name: Install SSDT
       run: |
-       dotnet build AdventureWorks2012.sln /p:Configuration=Release
+         choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Component.SQL.DataTools --includeRecommended --includeOptional" -y
+
+    - name: Build SQL Project
+      run: |
+        msbuild ./AdventureWorks2012.sqlproj /p:Configuration=Release /p:DropObjectsNotInSource=true
+      
+    # - name: Setup .NET Core
+    #   uses: actions/setup-dotnet@v1
+    #   with:
+    #     dotnet-version: '3.0'  # Specify the .NET Core version you need
+
+    # - name: Build .NET Projects
+    #   run: |
+    #    dotnet build AdventureWorks2012.sln /p:Configuration=Release
 
   # build:
   #   runs-on: self-hosted
