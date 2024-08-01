@@ -20,7 +20,15 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
+      
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+      
+    - name: Build Database project
+      run: |
+        cd AdventureWorks2012
+        msbuild.exe AdventureWorks2012.sqlproj /p:Configuration=Release
+        
     # - name: Setup .NET
     #   uses: actions/setup-dotnet@v2
     #   with:
@@ -43,15 +51,15 @@ jobs:
     #   run: |
     #     msbuild ./AdventureWorks2012.sqlproj /p:Configuration=Release /p:DropObjectsNotInSource=true
       
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '7.0'  # Specify the .NET Core version you need
+    # - name: Setup .NET Core
+    #   uses: actions/setup-dotnet@v1
+    #   with:
+    #     dotnet-version: '7.0'  # Specify the .NET Core version you need
 
-    - name: Build .NET Projects
-      run: |
-       cd AdventureWorks2012
-       dotnet build AdventureWorks2012.sqlproj /p:Configuration=Release
+    # - name: Build .NET Projects
+    #   run: |
+    #    cd AdventureWorks2012
+    #    dotnet build AdventureWorks2012.sqlproj /p:Configuration=Release
 
   # build:
   #   runs-on: self-hosted
