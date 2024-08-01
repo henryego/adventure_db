@@ -35,7 +35,7 @@ jobs:
 
     - name: Install Visual Studio Build Tools and SSDT
       run: |
-         choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Component.SQL.DataTools --includeRecommended --includeOptional" -y
+         choco.exe install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Component.SQL.DataTools --includeRecommended --includeOptional" -y
 
     - name: Build SQL Project
       run: |
