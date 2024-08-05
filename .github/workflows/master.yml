@@ -15,7 +15,7 @@ permissions:
   id-token: write
 
 jobs:
-  install-visual-studio:
+  build:
     runs-on: self-hosted
 
     steps:
@@ -55,39 +55,39 @@ jobs:
          name: SQLDB
          path: ${{ github.workspace }}/AdventureWorks2012/bin/Release/
 
-  # DeploySQLDBToDev:
-  #   runs-on: self-hosted
-  #   needs: build
-  #   if: success() && github.ref == 'refs/heads/preprod'
+  DeploySQLDBToDev:
+    runs-on: self-hosted
+    needs: build
+    # if: success() && github.ref == 'refs/heads/preprod'
     # if: github.event.ref == 'refs/heads/test' && success()
     # if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master'
     # if: github.event.ref == 'refs/heads/master' && success()
-    #if: github.event.ref == 'refs/heads/devbranch' && success()
+    # if: github.event.ref == 'refs/heads/devbranch' && success()
     # environment: ${{ github.ref == 'refs/heads/master' ? 'production' : 'staging' }}
-    # environment: DeploySQLDB
+    environment: DeploySQLDB
 
-    # steps:
-    #    - name: download artifact contaning dacpac
-    #      uses: actions/download-artifact@v3.0.0
-    #      with:
-    #         name: SQLDB
+    steps:
+       - name: download artifact contaning dacpac
+         uses: actions/download-artifact@v3.0.0
+         with:
+            name: SQLDB
 
        # - uses: azure/login@v1
        #   with: 
        #     creds: ${{ secrets.AZURE_CREDENTIALS }}
            
-       # - uses: azure/login@v1
-       #   with:
-       #    client-id: ${{ secrets.AZURE_CLIENT_ID }}
-       #    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-       #    subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+       - uses: azure/login@v1
+         with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-       # - name: Azure SQl deploy 
-       #   uses: Azure/sql-action@v1.3
-       #   with:
-       #     server-name: advtestsqldb001.database.windows.net
-       #     connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
-       #     dacpac-package: 'AdventureWorks2012.dacpac'
+       - name: Azure SQl deploy 
+         uses: Azure/sql-action@v1.3
+         with:
+           server-name: pocsqlserver00.database.windows.net
+           connection-string: '${{ secrets.AZURE_SQL_CONNECTION_STRING }}'
+           dacpac-package: 'AdventureWorks2012.dacpac'
 
   # DeploySQLDBToPrd:
   #   runs-on: windows-latest
