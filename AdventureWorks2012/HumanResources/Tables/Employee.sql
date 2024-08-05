@@ -6,6 +6,7 @@
     [OrganizationLevel] AS                  ([OrganizationNode].[GetLevel]()),
     [JobTitle]          NVARCHAR (50)       NOT NULL,
     [BirthDate]         DATE                NOT NULL,
+    [TestName]          DATE                NOT NULL,
     [MaritalStatus]     NCHAR (1)           NOT NULL,
     [Gender]            NCHAR (1)           NOT NULL,
     [HireDate]          DATE                NOT NULL,
