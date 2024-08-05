@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout repository
@@ -56,7 +56,7 @@ jobs:
          path: ${{ github.workspace }}/AdventureWorks2012/bin/Release/
 
   DeploySQLDBToDev:
-    runs-on: windows-latest
+    runs-on: self-hosted
     needs: build
     # if: success() && github.ref == 'refs/heads/preprod'
     # if: github.event.ref == 'refs/heads/test' && success()
