@@ -56,7 +56,7 @@ jobs:
          path: ${{ github.workspace }}/AdventureWorks2012/bin/Release/
 
   DeploySQLDBToDev:
-    runs-on: self-hosted
+    runs-on: windows-latest
     needs: build
     # if: success() && github.ref == 'refs/heads/preprod'
     # if: github.event.ref == 'refs/heads/test' && success()
