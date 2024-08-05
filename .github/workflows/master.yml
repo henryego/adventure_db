@@ -27,8 +27,8 @@ jobs:
       
     - name: Build Database project
       run: |
-        cd AdventureWorks2012
-        msbuild.exe AdventureWorks2012.sqlproj /p:Configuration=Release
+        # cd AdventureWorks2012
+        msbuild.exe AdventureWorks2012.sln /p:Configuration=Release
         
     # - name: Setup .NET
     #   uses: actions/setup-dotnet@v2
@@ -43,7 +43,7 @@ jobs:
     # - name: Build .NET Projects
     #   run: |
     #    cd AdventureWorks2012
-    #    dotnet build AdventureWorks2012.sqlproj /p:Configuration=Release
+    #    dotnet build AdventureWorks2012.sqlsln /p:Configuration=Release
 
   # build:
   #   runs-on: self-hosted
