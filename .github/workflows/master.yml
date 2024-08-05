@@ -34,23 +34,6 @@ jobs:
     #   uses: actions/setup-dotnet@v2
     #   with:
     #     dotnet-version: '8.0.x' # Specify the .NET version you need
-
-    # - name: Install Chocolatey
-    #   run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    #   shell: pwsh
-      
-    # - name: Ensure Chocolatey is in PATH
-    #   run: |
-    #       $env:Path += ";$env:ALLUSERSPROFILE\chocolatey\bin"
-    #   shell: pwsh 
-      
-    # - name: Install Visual Studio Build Tools and SSDT
-    #   run: |
-    #      choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.MSBuildTools --add Microsoft.VisualStudio.Component.SQL.DataTools --includeRecommended --includeOptional" -y
-    #   shell: pwsh
-    # - name: Build SQL Project
-    #   run: |
-    #     msbuild ./AdventureWorks2012.sqlproj /p:Configuration=Release /p:DropObjectsNotInSource=true
       
     # - name: Setup .NET Core
     #   uses: actions/setup-dotnet@v1
@@ -66,19 +49,11 @@ jobs:
   #   runs-on: self-hosted
   #   steps:
   #   - uses: actions/checkout@v2
-        
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.0.2
-      
-    - name: Build Database project
-      run: |
-        cd AdventureWorks2012
-        msbuild.exe AdventureWorks2012.sqlproj /p:Configuration=Release
 
-    # - uses: actions/upload-artifact@v3.0.0
-    #   with:
-    #      name: SQLDB
-  #        path: ${{ github.workspace }}/AdventureWorks2012/bin/Release/
+    - uses: actions/upload-artifact@v3.0.0
+      with:
+         name: SQLDB
+         path: ${{ github.workspace }}/AdventureWorks2012/bin/Release/
 
   # DeploySQLDBToDev:
   #   runs-on: self-hosted
